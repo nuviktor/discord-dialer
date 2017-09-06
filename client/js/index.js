@@ -23,28 +23,30 @@ function dial(number) {
   });
 }
 
-socket.on('connect', function () {
-  socket.on('message', function (msg) {
-    if (msg.startsWith('!')) {
-      var cmd = msg.split(' ');
-      console.log('[Command] ' + cmd);
+function onMessage(message) {
+  if (message.startsWith('!')) {
+    var cmd = message.split(' ');
+    console.log('[Command] ' + cmd);
 
-      switch (cmd[0]) {
-        case '!dial':
-          if (cmd.length > 1)
-            session = dial(cmd[1]);
-        break;
-        case '!bye':
-          if (session) session.bye();  
-        break;
-        case '!dtmf':
-          if (cmd.length > 1) {
-            var num = parseInt(cmd[1]); 
-            if (num && session)
-              session.dtmf(num);
-          }
-        break;
-      }
+    switch (cmd[0]) {
+      case '!dial':
+        if (cmd.length > 1)
+          session = dial(cmd[1]);
+      break;
+      case '!bye':
+        if (session) session.bye();  
+      break;
+      case '!dtmf':
+        if (cmd.length > 1) {
+          var num = parseInt(cmd[1]); 
+          if (num && session)
+            session.dtmf(num);
+        }
+      break;
     }
-  });
+  }
+}
+
+socket.on('connect', function () {
+  socket.on('message', onMessage);
 });

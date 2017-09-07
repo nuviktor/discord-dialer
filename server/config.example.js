@@ -8,6 +8,6 @@ config.users = [
     name: 'NAME',
     discriminator: 0
   }
-]
+];
 
 module.exports = config;

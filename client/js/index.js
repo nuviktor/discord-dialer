@@ -16,8 +16,7 @@ function dial(number) {
      media: {
        constraints: { audio: true, video: false },
        render: {
-         remote: document.getElementById('remote-video'),
-         local: document.getElementById('local-video')
+         remote: document.getElementById('remote-video')
        }
      }
   });

@@ -14,36 +14,37 @@ var session;
 function dial(number) {
   return ua.invite('sip:' + number + '@asterisk.lan', {
      media: {
-         constraints: { audio: true, video: false },
-         render: {
-            remote: document.getElementById('remote-video'),
-            local: document.getElementById('local-video')
-         }
+       constraints: { audio: true, video: false },
+       render: {
+         remote: document.getElementById('remote-video'),
+         local: document.getElementById('local-video')
+       }
      }
   });
+}
+
+function handleCommand(cmd) {
+  switch (cmd[0]) {
+    case '!dial':
+      if (cmd.length > 1)
+        session = dial(cmd[1]);
+    break;
+    case '!bye':
+      if (session)
+        session.bye();
+    break;
+    case '!dtmf':
+      if (cmd.length > 1 && session)
+        session.dtmf(cmd[1]);
+    break;
+  }
 }
 
 function onMessage(message) {
   if (message.startsWith('!')) {
     var cmd = message.split(' ');
     console.log('[Command] ' + cmd);
-
-    switch (cmd[0]) {
-      case '!dial':
-        if (cmd.length > 1)
-          session = dial(cmd[1]);
-      break;
-      case '!bye':
-        if (session) session.bye();  
-      break;
-      case '!dtmf':
-        if (cmd.length > 1) {
-          var num = parseInt(cmd[1]); 
-          if (num && session)
-            session.dtmf(num);
-        }
-      break;
-    }
+    handleCommand(cmd);
   }
 }
 

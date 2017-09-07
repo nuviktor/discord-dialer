@@ -7,8 +7,16 @@ const client = new Discord.Client();
 var socket;
 
 function isMessageAllowed(message) {
-  return message.author.username == config.user.name &&
-         message.author.discriminator == config.user.discriminator;
+  const username = message.author.username;
+  const discriminator = message.author.discriminator;
+
+  for (i = 0; i < config.users.length; i++) {
+    if (username == config.users[i].name &&
+        discriminator == config.users[i].discriminator)
+      return true;
+  }
+
+  return false;
 }
 
 function isMessageCommand(message) {
@@ -18,6 +26,7 @@ function isMessageCommand(message) {
 client.login(config.discordToken);
 
 io.on('connection', sock => {
+  console.log('New client connected');
   socket = sock;
 });
 

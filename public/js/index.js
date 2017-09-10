@@ -1,10 +1,8 @@
 var config = {
   uri: 'web@asterisk.lan',
-  ws_servers: 'wss://asterisk.lan:8089/ws',
+  wsServers: 'wss://asterisk.lan:8089/ws',
   authorizationUser: 'web',
-  password: 'web',
-  hackIpInContact: true,
-  rtcpMuxPolicy: 'negotiate'
+  password: 'web'
 };
 
 var ua = new SIP.UA(config);
@@ -23,7 +21,7 @@ function dial(number) {
 }
 
 function handleCommand(cmd) {
-  switch (cmd[0]) {
+  switch (cmd[0].toLowerCase()) {
     case 'dial':
       if (cmd.length > 1)
         session = dial(cmd[1]);

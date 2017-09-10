@@ -22,8 +22,8 @@ function isMessageCommand(message) {
   return message.content.startsWith(config.commandPrefix);
 }
 
-function stripPrefix(message) {
-  return message.content.substring(config.commandPrefix.length);
+function stripPrefix(command) {
+  return command.substring(config.commandPrefix.length);
 }
 
 client.login(config.discordToken);
@@ -35,7 +35,7 @@ io.on('connection', sock => {
 
 client.on('message', message => {
   if (socket && isMessageCommand(message) && isMessageAllowed(message)) {
-    const command = stripPrefix(message);
+    const command = stripPrefix(message.content);
     console.log('Sending command "' + command + '" to client');
     socket.send(command);
   }

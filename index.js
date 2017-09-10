@@ -36,7 +36,7 @@ io.on('connection', sock => {
 client.on('message', message => {
   if (socket && isMessageCommand(message) && isMessageAllowed(message)) {
     const command = stripPrefix(message.content);
-    console.log('Sending command "' + command + '" to client');
+    console.log(`Sending command "${command}" to client`);
     socket.send(command);
   }
 });

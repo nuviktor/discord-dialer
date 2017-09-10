@@ -10,7 +10,7 @@ function isMessageAllowed(message) {
   const username = message.author.username;
   const discriminator = message.author.discriminator;
 
-  for (i = 0; i < config.users.length; i++)
+  for (let i = 0; i < config.users.length; i++)
     if (username == config.users[i].name &&
         discriminator == config.users[i].discriminator)
       return true;

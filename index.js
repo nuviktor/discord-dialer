@@ -10,17 +10,20 @@ function isMessageAllowed(message) {
   const username = message.author.username;
   const discriminator = message.author.discriminator;
 
-  for (i = 0; i < config.users.length; i++) {
+  for (i = 0; i < config.users.length; i++)
     if (username == config.users[i].name &&
         discriminator == config.users[i].discriminator)
       return true;
-  }
 
   return false;
 }
 
 function isMessageCommand(message) {
   return message.content.startsWith(config.commandPrefix);
+}
+
+function stripPrefix(message) {
+  return message.content.substring(config.commandPrefix.length);
 }
 
 client.login(config.discordToken);
@@ -31,8 +34,9 @@ io.on('connection', sock => {
 });
 
 client.on('message', message => {
-  if (socket && isMessageAllowed(message) && isMessageCommand(message)) {
-    console.log('Sending command "' + message.content + '" to client');
-    socket.send(message.content);
+  if (socket && isMessageCommand(message) && isMessageAllowed(message)) {
+    const command = stripPrefix(message);
+    console.log('Sending command "' + command + '" to client');
+    socket.send(command);
   }
 });

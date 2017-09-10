@@ -24,15 +24,15 @@ function dial(number) {
 
 function handleCommand(cmd) {
   switch (cmd[0]) {
-    case '!dial':
+    case 'dial':
       if (cmd.length > 1)
         session = dial(cmd[1]);
     break;
-    case '!bye':
+    case 'bye':
       if (session)
         session.bye();
     break;
-    case '!dtmf':
+    case 'dtmf':
       if (cmd.length > 1 && session)
         session.dtmf(cmd[1]);
     break;
@@ -40,11 +40,9 @@ function handleCommand(cmd) {
 }
 
 function onMessage(message) {
-  if (message.startsWith('!')) {
-    var cmd = message.split(' ');
-    console.log('[Command] ' + cmd);
-    handleCommand(cmd);
-  }
+  var cmd = message.split(/\s+/);
+  console.log('[Command] ' + cmd);
+  handleCommand(cmd);
 }
 
 socket.on('connect', function () {

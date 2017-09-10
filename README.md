@@ -39,3 +39,7 @@ Tested with latest Firefox (55) and Asterisk (14.6).
 |                         |
 +-------------------------+
 ```
+
+## Todo
+
+* Make the client configuration modifiable through a form that stores data in the browser's local storage.

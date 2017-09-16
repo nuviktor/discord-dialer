@@ -7,6 +7,7 @@ var config = {
 
 var ua = new SIP.UA(config);
 var socket = io('https://dialer.lan');
+var goodbye = new Audio('audio/goodbye.wav');
 var session;
 
 function dial(number) {
@@ -25,6 +26,9 @@ function handleCommand(cmd) {
     case 'dial':
       if (cmd.length > 1)
         session = dial(cmd[1]);
+        session.on('bye', function (request) {
+          goodbye.play();
+        });
     break;
     case 'bye':
       if (session)

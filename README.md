@@ -6,6 +6,8 @@ Once you've navigated to the client web page you'll need to link it up with Disc
 
 Tested with latest Firefox (55) and Asterisk (14.6).
 
+The `public/audio/goodbye.wav` is borrowed from the Asterisk sounds collection and thus respects its licence. Please see `public/audio/LICENCE` for more.
+
 ## Layout
 
 ```
@@ -43,3 +45,4 @@ Tested with latest Firefox (55) and Asterisk (14.6).
 ## Todo
 
 * Make the client configuration modifiable through a form that stores data in the browser's local storage.
+* Consider adding other audio responses for certain events

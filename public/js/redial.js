@@ -66,4 +66,3 @@ function processRedialObject(object) {
 
   return number;
 }
-

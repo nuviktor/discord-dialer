@@ -51,7 +51,7 @@ function handleCommand(cmd) {
       } else {
         redial = false;
       }
-    break
+    break;
     case 'bye':
       if (session)
         session.bye();

@@ -9,6 +9,7 @@ var ua = new SIP.UA(config);
 var socket = io('https://dialer.lan');
 var goodbye = new Audio('audio/goodbye.wav');
 var session;
+var redial = false;
 
 function dial(number) {
   return ua.invite('sip:' + number + '@asterisk.lan', {
@@ -24,12 +25,29 @@ function dial(number) {
 function handleCommand(cmd) {
   switch (cmd[0].toLowerCase()) {
     case 'dial':
-      if (cmd.length > 1)
+      if (cmd.length > 1) {
         session = dial(cmd[1]);
         session.on('bye', function (request) {
           goodbye.play();
         });
+      }
     break;
+    case 'redial':
+      if (cmd.length > 1) {
+        var number = cmd[1];
+
+        redial = true;
+        session = dial(number);
+
+        session.on('bye', function (request) {
+          goodbye.play();
+          if (redial)
+            handleCommand(['redial', number]);
+        });
+      } else {
+        redial = false;
+      }
+    break
     case 'bye':
       if (session)
         session.bye();

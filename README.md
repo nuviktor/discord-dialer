@@ -45,4 +45,5 @@ The `public/audio/goodbye.wav` is borrowed from the Asterisk sounds collection a
 ## Todo
 
 * Make the client configuration modifiable through a form that stores data in the browser's local storage.
-* Consider adding other audio responses for certain events
+* Consider adding other audio responses for certain events.
+* Add info on redial functionality and warning about misuse.

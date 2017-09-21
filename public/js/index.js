@@ -34,15 +34,19 @@ function handleCommand(cmd) {
     break;
     case 'redial':
       if (cmd.length > 1) {
-        var number = cmd[1];
+        var redialSpec = cmd[1];
+        var redialObject = parseRedialSpec(redialSpec);
+        var number = processRedialObject(redialObject);
 
         redial = true;
+
+        console.info('[Action] Dialing ' + number);
         session = dial(number);
 
         session.on('bye', function (request) {
           goodbye.play();
           if (redial)
-            handleCommand(['redial', number]);
+            handleCommand(['redial', redialSpec]);
         });
       } else {
         redial = false;
@@ -61,7 +65,7 @@ function handleCommand(cmd) {
 
 function onMessage(message) {
   var cmd = message.split(/\s+/);
-  console.log('[Command] ' + cmd);
+  console.info('[Command] ' + cmd);
   handleCommand(cmd);
 }
 

@@ -26,7 +26,11 @@ function handleCommand(cmd) {
   switch (cmd[0].toLowerCase()) {
     case 'dial':
       if (cmd.length > 1) {
-        session = dial(cmd[1]);
+        var number = cmd[1];
+
+        console.info('[Action] Dialing ' + number);
+        session = dial(number);
+
         session.on('bye', function (request) {
           goodbye.play();
         });
@@ -53,12 +57,18 @@ function handleCommand(cmd) {
       }
     break;
     case 'bye':
-      if (session)
+      if (session) {
+        console.info('[Action] Hanging up');
         session.bye();
+      }
     break;
     case 'dtmf':
-      if (cmd.length > 1 && session)
-        session.dtmf(cmd[1]);
+      if (cmd.length > 1 && session) {
+        var dtmf = cmd[1];
+
+        console.info('[Action] Sending DTMF ' + dtmf);
+        session.dtmf(dtmf);
+      }
     break;
   }
 }

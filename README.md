@@ -20,9 +20,9 @@ This will keep calling `5551234567` with a random caller ID each time.
 * `Z` represents a random digit from 1 to 9.
 * `N` represents a random digit from 2 to 9.
 
-You can also use specific numbers, or a random selection of numbers of your choice using braces:
+You can also use specific numbers, or a random selection of numbers of your choice using square brackets:
 
-`redial 5551234567*{555,541}NXXXXXX`
+`redial 5551234567*[555,541]NXXXXXX`
 
 This will randomly select `555` or `541` for the first three digits each time, and the rest of the digits will be random.
 

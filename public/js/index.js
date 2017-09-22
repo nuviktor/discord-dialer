@@ -22,9 +22,9 @@ function dial(number) {
   });
 }
 
-function handleRedial(redialSpec) {
-  var redialObject = parseRedialSpec(redialSpec);
-  var number = processRedialObject(redialObject);
+function handleRedial(spec) {
+  var object = parseRedialSpec(spec);
+  var number = processRedialObject(object);
 
   redial = true;
 
@@ -34,7 +34,7 @@ function handleRedial(redialSpec) {
   session.on('bye', function (request) {
     goodbye.play();
     if (redial)
-      handleRedial(redialSpec);
+      handleRedial(spec);
   });
 }
 

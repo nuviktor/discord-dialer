@@ -8,6 +8,13 @@ Tested with latest Firefox (55) and Asterisk (14.6).
 
 The `public/audio/goodbye.wav` is borrowed from the Asterisk sounds collection and thus respects its licence. Please see `public/audio/LICENCE` for more.
 
+## Commands
+
+* `dial NUMBER`
+* `dtmf DIGITS`, example `dtmf 12#`
+* `redial [REDIAL SPEC]`, see next section
+* `bye`
+
 ## Redial feature
 
 The dialer has a redial feature which allows for automatic redialing and caller ID switching. For example, if your dialplan allows you to set the caller ID to `15417543010` by calling `5551234567*5417543010`, you can keep redialing with a random caller ID each time by issuing the following command:
@@ -25,6 +32,8 @@ You can also use specific numbers, or a random selection of numbers of your choi
 `redial 5551234567*[555,541]NXXXXXX`
 
 This will randomly select `555` or `541` for the first three digits each time, and the rest of the digits will be random.
+
+You can stop redialing by issuing the `redial` command again but with no arguments.
 
 *This feature should not be misused and should be used only against fraudulent schemes. For that reason, I've left a lot of information about the setup quite vague, so that not just anyone can take advantage of the feature.*
 

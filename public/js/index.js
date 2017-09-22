@@ -36,7 +36,9 @@ function handleRedial(spec) {
     goodbye.play();
 
     if (redial)
-      handleRedial(spec);
+      window.setTimeout(function () {
+        handleRedial(spec);
+      }, getRandomInt(3000, 7000));
     else
       console.info('[Info] Redial terminated');
   });

@@ -62,8 +62,10 @@ function handleCommand(cmd) {
         console.info('[Action] Commencing redial');
         handleRedial(cmd[1]);
       } else {
-        console.info('[Action] Terminating redial');
-        redial = false;
+        if (redial) {
+          console.info('[Action] Terminating redial');
+          redial = false;
+        }
       }
     break;
     case 'bye':

@@ -12,7 +12,7 @@ The `public/audio/goodbye.wav` is borrowed from the Asterisk sounds collection a
 
 * `dial NUMBER`
 * `dtmf DIGITS`, example `dtmf 12#`
-* `redial [REDIAL SPEC]`, see next section
+* `redial [REDIAL-SPEC]`, see next section
 * `bye`
 
 ## Redial feature

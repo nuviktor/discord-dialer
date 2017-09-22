@@ -32,9 +32,13 @@ function handleRedial(spec) {
   session = dial(number);
 
   session.on('bye', function (request) {
+    console.info('[Info] Call ended');
     goodbye.play();
+
     if (redial)
       handleRedial(spec);
+    else
+      console.info('[Info] Redial terminated');
   });
 }
 
@@ -48,15 +52,19 @@ function handleCommand(cmd) {
         session = dial(number);
 
         session.on('bye', function (request) {
+          console.info('[Info] Call ended');
           goodbye.play();
         });
       }
     break;
     case 'redial':
-      if (cmd.length > 1)
+      if (cmd.length > 1) {
+        console.info('[Action] Commencing redial');
         handleRedial(cmd[1]);
-      else
+      } else {
+        console.info('[Action] Terminating redial');
         redial = false;
+      }
     break;
     case 'bye':
       if (session) {

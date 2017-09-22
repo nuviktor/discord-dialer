@@ -15,12 +15,12 @@ function parseRedialSpec(spec) {
   for (var i = 0; i < spec.length; i++) {
     var c = spec[i];
 
-    if (c == '{') {
+    if (c == '[') {
       inBrace = true;
     } else if (c == ',' && inBrace) {
       braceData.push(part);
       part = '';
-    } else if (c == '}') {
+    } else if (c == ']') {
       inBrace = false;
       braceData.push(part);
       redialObject.push({

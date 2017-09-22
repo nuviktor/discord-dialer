@@ -22,6 +22,22 @@ function dial(number) {
   });
 }
 
+function handleRedial(redialSpec) {
+  var redialObject = parseRedialSpec(redialSpec);
+  var number = processRedialObject(redialObject);
+
+  redial = true;
+
+  console.info('[Action] Dialing ' + number);
+  session = dial(number);
+
+  session.on('bye', function (request) {
+    goodbye.play();
+    if (redial)
+      handleRedial(redialSpec);
+  });
+}
+
 function handleCommand(cmd) {
   switch (cmd[0].toLowerCase()) {
     case 'dial':
@@ -37,24 +53,10 @@ function handleCommand(cmd) {
       }
     break;
     case 'redial':
-      if (cmd.length > 1) {
-        var redialSpec = cmd[1];
-        var redialObject = parseRedialSpec(redialSpec);
-        var number = processRedialObject(redialObject);
-
-        redial = true;
-
-        console.info('[Action] Dialing ' + number);
-        session = dial(number);
-
-        session.on('bye', function (request) {
-          goodbye.play();
-          if (redial)
-            handleCommand(['redial', redialSpec]);
-        });
-      } else {
+      if (cmd.length > 1)
+        handleRedial(cmd[1]);
+      else
         redial = false;
-      }
     break;
     case 'bye':
       if (session) {

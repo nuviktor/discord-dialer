@@ -73,7 +73,9 @@ You can stop redialing by issuing the `redial` command again but with no argumen
 ## Todo
 
 * Make the client configuration modifiable through a form that stores data in the browser's local storage.
+* Whitelist of commands for certain users?
 * Consider adding other audio responses for certain events.
+* Consider what happens when multiple browsers connect.
 
 ## Licences
 

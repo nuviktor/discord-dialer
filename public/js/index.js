@@ -12,6 +12,9 @@ var session;
 var redial = false;
 
 function dial(number) {
+  console.info('[Action] Dialing ' + number);
+  socket.send('Dialing ' + number);
+
   return ua.invite('sip:' + number + '@asterisk.lan', {
      media: {
        constraints: { audio: true, video: false },
@@ -22,18 +25,21 @@ function dial(number) {
   });
 }
 
+function byeCallback() {
+  console.info('[Info] Call ended');
+  socket.send('Call ended');
+  goodbye.play();
+}
+
 function handleRedial(spec) {
   var object = parseRedialSpec(spec);
   var number = processRedialObject(object);
 
   redial = true;
 
-  console.info('[Action] Dialing ' + number);
   session = dial(number);
-
   session.on('bye', function (request) {
-    console.info('[Info] Call ended');
-    goodbye.play();
+    byeCallback()
 
     if (redial)
       window.setTimeout(function () {
@@ -50,13 +56,8 @@ function handleCommand(cmd) {
       if (cmd.length > 1) {
         var number = cmd[1];
 
-        console.info('[Action] Dialing ' + number);
         session = dial(number);
-
-        session.on('bye', function (request) {
-          console.info('[Info] Call ended');
-          goodbye.play();
-        });
+        session.on('bye', byeCallback);
       }
     break;
     case 'redial':

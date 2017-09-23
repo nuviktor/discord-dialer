@@ -42,7 +42,7 @@ function handleRedial(spec) {
         byeCallback()
 
         if (redial)
-            window.setTimeout(function () {
+            setTimeout(function () {
                 handleRedial(spec);
             }, getRandomInt(3000, 7000));
         else

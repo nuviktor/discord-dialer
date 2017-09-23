@@ -1,8 +1,8 @@
 var config = {
-  uri: 'web@asterisk.lan',
-  wsServers: 'wss://asterisk.lan:8089/ws',
-  authorizationUser: 'web',
-  password: 'web'
+    uri: 'web@asterisk.lan',
+    wsServers: 'wss://asterisk.lan:8089/ws',
+    authorizationUser: 'web',
+    password: 'web'
 };
 
 var ua = new SIP.UA(config);
@@ -12,86 +12,86 @@ var session;
 var redial = false;
 
 function dial(number) {
-  console.info('[Action] Dialing ' + number);
-  socket.send('Dialing ' + number);
+    console.info('[Action] Dialing ' + number);
+    socket.send('Dialing ' + number);
 
-  return ua.invite('sip:' + number + '@asterisk.lan', {
-     media: {
-       constraints: { audio: true, video: false },
-       render: {
-         remote: document.getElementById('remote-video')
-       }
-     }
+    return ua.invite('sip:' + number + '@asterisk.lan', {
+        media: {
+            constraints: { audio: true, video: false },
+            render: {
+                remote: document.getElementById('remote-video')
+            }
+        }
   });
 }
 
 function byeCallback() {
-  console.info('[Info] Call ended');
-  socket.send('Call ended');
-  goodbye.play();
+    console.info('[Info] Call ended');
+    socket.send('Call ended');
+    goodbye.play();
 }
 
 function handleRedial(spec) {
-  var object = parseRedialSpec(spec);
-  var number = processRedialObject(object);
+    var object = parseRedialSpec(spec);
+    var number = processRedialObject(object);
 
-  redial = true;
+    redial = true;
 
-  session = dial(number);
-  session.on('bye', function (request) {
-    byeCallback()
+    session = dial(number);
+    session.on('bye', function (request) {
+        byeCallback()
 
-    if (redial)
-      window.setTimeout(function () {
-        handleRedial(spec);
-      }, getRandomInt(3000, 7000));
-    else
-      console.info('[Info] Redial terminated');
-  });
+        if (redial)
+            window.setTimeout(function () {
+                handleRedial(spec);
+            }, getRandomInt(3000, 7000));
+        else
+            console.info('[Info] Redial terminated');
+    });
 }
 
 function handleCommand(cmd) {
-  switch (cmd[0].toLowerCase()) {
+    switch (cmd[0].toLowerCase()) {
     case 'dial':
-      if (cmd.length > 1) {
-        var number = cmd[1];
+        if (cmd.length > 1) {
+            var number = cmd[1];
 
-        session = dial(number);
-        session.on('bye', byeCallback);
-      }
+            session = dial(number);
+            session.on('bye', byeCallback);
+        }
     break;
     case 'redial':
-      if (cmd.length > 1) {
-        console.info('[Action] Commencing redial');
-        handleRedial(cmd[1]);
-      } else if (redial) {
-        console.info('[Action] Terminating redial');
-        redial = false;
-      }
+        if (cmd.length > 1) {
+            console.info('[Action] Commencing redial');
+            handleRedial(cmd[1]);
+        } else if (redial) {
+            console.info('[Action] Terminating redial');
+            redial = false;
+        }
     break;
     case 'bye':
-      if (session) {
-        console.info('[Action] Hanging up');
-        session.bye();
-      }
+        if (session) {
+            console.info('[Action] Hanging up');
+            session.bye();
+        }
     break;
     case 'dtmf':
-      if (cmd.length > 1 && session) {
-        var dtmf = cmd[1];
+        if (cmd.length > 1 && session) {
+            var dtmf = cmd[1];
 
-        console.info('[Action] Sending DTMF ' + dtmf);
-        session.dtmf(dtmf);
-      }
+            console.info('[Action] Sending DTMF ' + dtmf);
+            session.dtmf(dtmf);
+        }
     break;
-  }
+    }
 }
 
 function onMessage(message) {
-  var cmd = message.split(/\s+/);
-  console.info('[Command] ' + cmd);
-  handleCommand(cmd);
+    var cmd = message.split(/\s+/);
+    console.info('[Command] ' + cmd);
+    handleCommand(cmd);
 }
 
 socket.on('connect', function () {
-  socket.on('message', onMessage);
+    socket.on('message', onMessage);
 });

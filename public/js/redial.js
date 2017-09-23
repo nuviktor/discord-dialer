@@ -1,74 +1,72 @@
 function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function parseRedialSpec(spec) {
-  var redialObject = [];
+    var redialObject = [];
 
-  var inBrace = false;
-  var braceData = [];
-  var inPart = false;
-  var part = '';
+    var inBrace = false;
+    var braceData = [];
+    var inPart = false;
+    var part = '';
 
-  for (var i = 0; i < spec.length; i++) {
-    var c = spec[i];
+    for (var i = 0; i < spec.length; i++) {
+        var c = spec[i];
 
-    if (c == '[') {
-      inBrace = true;
-    } else if (c == ',' && inBrace) {
-      braceData.push(part);
-      part = '';
-    } else if (c == ']') {
-      inBrace = false;
-      braceData.push(part);
-      redialObject.push({
-        type: 'brace',
-        data: braceData
-      });
+        if (c == '[') {
+            inBrace = true;
+        } else if (c == ',' && inBrace) {
+            braceData.push(part);
+            part = '';
+        } else if (c == ']') {
+            inBrace = false;
+            braceData.push(part);
+            redialObject.push({
+                type: 'brace',
+                data: braceData
+            });
 
-      braceData = [];
-      part = '';
-    } else {
-      if (inBrace) {
-        part += c;
-      } else {
-        redialObject.push({
-          type: 'digit',
-          data: c
-        });
-      }
+            braceData = [];
+            part = '';
+        } else if (inBrace) {
+            part += c;
+        } else {
+            redialObject.push({
+                type: 'digit',
+                data: c
+            });
+        }
     }
-  }
 
-  return redialObject;
+    return redialObject;
 }
 
 function processRedialObject(object) {
-  var number = '';
+    var number = '';
 
-  for (var i = 0; i < object.length; i++) {
-    var e = object[i];
+    for (var i = 0; i < object.length; i++) {
+        var e = object[i];
 
-    if (e.type == 'digit') {
-      switch (e.data.toLowerCase()) {
-        case 'x':
-          number += getRandomInt(0, 10);
-        break;
-        case 'z':
-          number += getRandomInt(1, 10);
-        break;
-        case 'n':
-          number += getRandomInt(2, 10);
-        break;
-        default:
-          number += e.data;
-      }
-    } else if (e.type == 'brace') {
-      number += e.data[getRandomInt(0, e.data.length)];
+        if (e.type == 'digit') {
+            switch (e.data.toLowerCase()) {
+            case 'x':
+                number += getRandomInt(0, 10);
+            break;
+            case 'z':
+                number += getRandomInt(1, 10);
+            break;
+            case 'n':
+                number += getRandomInt(2, 10);
+            break;
+            default:
+                number += e.data;
+            }
+        } else if (e.type == 'brace') {
+            number += e.data[getRandomInt(0, e.data.length)];
+        }
     }
-  }
 
-  return number;
+    return number;
 }

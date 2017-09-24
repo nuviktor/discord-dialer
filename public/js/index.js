@@ -35,8 +35,6 @@ function handleRedial(spec) {
     var object = parseRedialSpec(spec);
     var number = processRedialObject(object);
 
-    redial = true;
-
     session = dial(number);
     session.on('bye', function (request) {
         byeCallback()
@@ -63,6 +61,7 @@ function handleCommand(cmd) {
     case 'redial':
         if (cmd.length > 1) {
             console.info('[Action] Commencing redial');
+            redial = true;
             handleRedial(cmd[1]);
         } else if (redial) {
             console.info('[Action] Terminating redial');

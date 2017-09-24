@@ -52,9 +52,7 @@ function handleCommand(cmd) {
     switch (cmd[0].toLowerCase()) {
     case 'dial':
         if (cmd.length > 1) {
-            var number = cmd[1];
-
-            session = dial(number);
+            session = dial(cmd[1]);
             session.on('bye', byeCallback);
         }
     break;

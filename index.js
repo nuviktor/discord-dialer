@@ -32,10 +32,11 @@ io.on('connection', sock => {
     console.log('New client connected');
     socket = sock;
 
-    sock.on('message', function (message) {
-        let channel = client.channels.get(config.channel);
-        channel.setTopic(message);
-    });
+    if (config.channel)
+        sock.on('message', message => {
+            let channel = client.channels.get(config.channel);
+            channel.setTopic(message);
+        });
 });
 
 client.on('message', message => {

@@ -51,7 +51,10 @@ function handleRedial(spec) {
 function handleCommand(cmd) {
     switch (cmd[0].toLowerCase()) {
     case 'dial':
-        if (cmd.length > 1) {
+        if (cmd.length > 1 && ! redial) {
+            if (session)
+                session.bye();
+
             session = dial(cmd[1]);
             session.on('bye', byeCallback);
         }

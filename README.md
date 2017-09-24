@@ -76,6 +76,7 @@ You can stop redialing by issuing the `redial` command again but with no argumen
 * Whitelist of commands for certain users?
 * Consider adding other audio responses for certain events.
 * Consider what happens when multiple browsers connect.
+* Actually check if a call is in progress before calling dtmf or bye.
 
 ## Licences
 

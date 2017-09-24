@@ -22,7 +22,7 @@ function dial(number) {
                 remote: document.getElementById('remote-video')
             }
         }
-  });
+    });
 }
 
 function byeCallback() {

@@ -93,12 +93,19 @@ function handleCommand(cmd) {
     }
 }
 
-function onMessage(message) {
-    var cmd = message.split(/\s+/);
-    console.info('[Command] ' + cmd);
-    handleCommand(cmd);
+function runString(string) {
+    var cmd = string.split(/\s+/);
+    if (cmd.length > 0) {
+        console.info('[Command] ' + cmd);
+        handleCommand(cmd);
+    }
 }
 
 socket.on('connect', function () {
-    socket.on('message', onMessage);
+    socket.on('message', runString);
 });
+
+document.getElementById('run-command').onclick = function() {
+    var command = document.getElementById('command').value;
+    runString(command);
+}

@@ -25,6 +25,13 @@ function dial(number) {
     });
 }
 
+function bye() {
+    if (session) {
+        console.info('[Action] Hanging up');
+        session.bye();
+    }
+}
+
 function byeCallback() {
     console.info('[Info] Call ended');
     socket.send('Call ended');
@@ -52,8 +59,7 @@ function handleCommand(cmd) {
     switch (cmd[0].toLowerCase()) {
     case 'dial':
         if (cmd.length > 1 && ! redial) {
-            if (session)
-                session.bye();
+            bye()
 
             session = dial(cmd[1]);
             session.on('bye', byeCallback);
@@ -62,8 +68,7 @@ function handleCommand(cmd) {
     case 'redial':
         if (cmd.length > 1) {
             if (! redial) {
-                if (session)
-                    session.bye();
+                bye()
 
                 console.info('[Action] Commencing redial');
                 redial = true;
@@ -75,10 +80,7 @@ function handleCommand(cmd) {
         }
     break;
     case 'bye':
-        if (session) {
-            console.info('[Action] Hanging up');
-            session.bye();
-        }
+        bye()
     break;
     case 'dtmf':
         if (cmd.length > 1 && session) {

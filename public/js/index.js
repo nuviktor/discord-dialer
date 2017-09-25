@@ -10,7 +10,6 @@ var socket = io('https://dialer.lan');
 var goodbye = new Audio('audio/goodbye.wav');
 var session;
 var redial = false;
-var endRedial = false;
 
 function dial(number) {
     console.info('[Action] Dialing ' + number);
@@ -36,20 +35,16 @@ function handleRedial(spec) {
     var object = parseRedialSpec(spec);
     var number = processRedialObject(object);
 
-    redial = true;
-
     session = dial(number);
     session.on('bye', function (request) {
         byeCallback()
 
-        if (! endRedial) {
+        if (redial)
             setTimeout(function () {
                 handleRedial(spec);
             }, getRandomInt(3000, 7000));
-        } else {
-            redial = false;
+        else
             console.info('[Info] Redial terminated');
-        }
     });
 }
 
@@ -67,13 +62,16 @@ function handleCommand(cmd) {
     case 'redial':
         if (cmd.length > 1) {
             if (! redial) {
+                if (session)
+                    session.bye();
+
                 console.info('[Action] Commencing redial');
-                endRedial = false;
+                redial = true;
                 handleRedial(cmd[1]);
             }
         } else if (redial) {
             console.info('[Action] Terminating redial');
-            endRedial = true;
+            redial = false;
         }
     break;
     case 'bye':

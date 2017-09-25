@@ -44,7 +44,7 @@ function handleRedial(spec) {
 
     session = dial(number);
     session.on('bye', function (request) {
-        byeCallback()
+        byeCallback();
 
         if (redial)
             setTimeout(function () {
@@ -59,7 +59,7 @@ function handleCommand(cmd) {
     switch (cmd[0].toLowerCase()) {
     case 'dial':
         if (cmd.length > 1 && ! redial) {
-            bye()
+            bye();
 
             session = dial(cmd[1]);
             session.on('bye', byeCallback);
@@ -68,7 +68,7 @@ function handleCommand(cmd) {
     case 'redial':
         if (cmd.length > 1) {
             if (! redial) {
-                bye()
+                bye();
 
                 console.info('[Action] Commencing redial');
                 redial = true;
@@ -80,7 +80,7 @@ function handleCommand(cmd) {
         }
     break;
     case 'bye':
-        bye()
+        bye();
     break;
     case 'dtmf':
         if (cmd.length > 1 && session) {
@@ -106,6 +106,6 @@ socket.on('connect', function () {
 });
 
 document.getElementById('run-command').onclick = function() {
-    var command = document.getElementById('command').value;
-    runString(command);
+    var cmd = document.getElementById('command').value;
+    runString(cmd);
 }

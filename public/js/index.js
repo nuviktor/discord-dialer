@@ -93,7 +93,7 @@ function handleCommand(cmd) {
     }
 }
 
-function runString(string) {
+function run(string) {
     var cmd = string.split(/\s+/);
     if (cmd.length > 0) {
         console.info('[Command] ' + cmd);
@@ -102,10 +102,5 @@ function runString(string) {
 }
 
 socket.on('connect', function () {
-    socket.on('message', runString);
+    socket.on('message', run);
 });
-
-document.getElementById('run-command').onclick = function() {
-    var cmd = document.getElementById('command').value;
-    runString(cmd);
-}

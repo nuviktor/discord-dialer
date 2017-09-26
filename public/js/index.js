@@ -6,7 +6,7 @@ var config = {
 };
 
 var ua = new SIP.UA(config);
-var socket = io('https://dialer.lan');
+var socket = io('https://dialbot.lan');
 var goodbye = new Audio('audio/goodbye.wav');
 var session;
 var redial = false;

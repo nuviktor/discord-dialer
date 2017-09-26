@@ -10,6 +10,7 @@ var socket = io('https://dialbot.lan');
 var goodbye = new Audio('audio/goodbye.wav');
 var session;
 var redial = false;
+var redialTimeout;
 
 function dial(number) {
     console.info('[Action] Dialing ' + number);
@@ -47,7 +48,7 @@ function handleRedial(spec) {
         byeCallback();
 
         if (redial)
-            setTimeout(function () {
+            redialTimeout = setTimeout(function () {
                 handleRedial(spec);
             }, getRandomInt(3000, 7000));
         else
@@ -69,6 +70,7 @@ function handleCommand(cmd) {
         if (cmd.length > 1) {
             if (! redial) {
                 bye();
+                clearTimeout(redialTimeout);
 
                 console.info('[Action] Commencing redial');
                 redial = true;

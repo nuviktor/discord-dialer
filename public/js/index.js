@@ -103,6 +103,6 @@ function run(string) {
     }
 }
 
-socket.onmessage = function(event) {
+socket.onmessage = function (event) {
     run(event.data);
 }

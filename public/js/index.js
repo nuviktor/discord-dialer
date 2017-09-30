@@ -6,7 +6,7 @@ var config = {
 };
 
 var ua = new SIP.UA(config);
-var socket = io('https://dialbot.lan');
+var socket = new WebSocket('wss://dialbot.lan');
 var goodbye = new Audio('audio/goodbye.wav');
 var session;
 var redial = false;
@@ -103,6 +103,6 @@ function run(string) {
     }
 }
 
-socket.on('connect', function () {
-    socket.on('message', run);
-});
+socket.onmessage = function(event) {
+    run(event.data);
+}

@@ -1,7 +1,8 @@
 const config = require('./config');
-const io = require('socket.io')(config.port);
+const WebSocket = require('ws');
 const Discord = require('discord.js');
 
+const wss = new WebSocket.Server({ port: config.port });
 const client = new Discord.Client();
 
 var socket;
@@ -28,12 +29,12 @@ function stripPrefix(command) {
 
 client.login(config.discordToken);
 
-io.on('connection', sock => {
+wss.on('connection', ws => {
     console.log('New client connected');
-    socket = sock;
+    socket = ws;
 
     if (config.channel)
-        sock.on('message', message => {
+        ws.on('message', message => {
             let channel = client.channels.get(config.channel);
             channel.setTopic(message);
         });

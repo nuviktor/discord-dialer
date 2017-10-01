@@ -39,8 +39,7 @@ function byeCallback() {
     goodbye.play();
 }
 
-function handleRedial(spec) {
-    var object = parseRedialSpec(spec);
+function handleRedial(object) {
     var number = processRedialObject(object);
 
     session = dial(number);
@@ -49,7 +48,7 @@ function handleRedial(spec) {
 
         if (redial)
             redialTimeout = setTimeout(function () {
-                handleRedial(spec);
+                handleRedial(object);
             }, getRandomInt(3000, 7000));
         else
             console.info('[Info] Redial terminated');
@@ -69,12 +68,14 @@ function handleCommand(cmd) {
     case 'redial':
         if (cmd.length > 1) {
             if (! redial) {
+                var redialObject = parseRedialSpec(cmd[1]);
+
                 bye();
                 clearTimeout(redialTimeout);
 
                 console.info('[Action] Commencing redial');
                 redial = true;
-                handleRedial(cmd[1]);
+                handleRedial(redialObject);
             }
         } else if (redial) {
             console.info('[Action] Terminating redial');
